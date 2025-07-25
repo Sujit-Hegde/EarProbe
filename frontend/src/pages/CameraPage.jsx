@@ -21,6 +21,8 @@ export const CameraPage = () => {
   const [isLoadingPatients, setIsLoadingPatients] = useState(false);
   // Add state for camera mode detection
   const [cameraMode, setCameraMode] = useState("environment"); // Default to rear camera
+  // Add state for camera zoom
+  const [zoomLevel, setZoomLevel] = useState(1.0); // Default zoom level is 1.0 (no zoom)
   
   const webcamRef = useRef(null);
   const navigate = useNavigate();
@@ -98,8 +100,22 @@ export const CameraPage = () => {
       tracks.forEach(track => track.stop());
     }
     
-    // Toggle the camera mode
+    // Toggle the camera mode and reset zoom
     setCameraMode(prevMode => prevMode === "user" ? "environment" : "user");
+    setZoomLevel(1.0); // Reset zoom when switching cameras
+  }, []);
+  
+  // Functions for camera zoom control
+  const zoomIn = useCallback(() => {
+    setZoomLevel(prevZoom => Math.min(prevZoom + 0.1, 3.0)); // Limit maximum zoom to 3x
+  }, []);
+  
+  const zoomOut = useCallback(() => {
+    setZoomLevel(prevZoom => Math.max(prevZoom - 0.1, 1.0)); // Limit minimum zoom to 1x (no zoom)
+  }, []);
+  
+  const resetZoom = useCallback(() => {
+    setZoomLevel(1.0); // Reset to default zoom
   }, []);
   
   const handleInputChange = (e) => {
@@ -215,6 +231,7 @@ export const CameraPage = () => {
   const resetCamera = () => {
     setCapturedImage(null);
     setIsCameraOpen(true);
+    setZoomLevel(1.0); // Reset zoom when reopening camera
   };
   
   const handleSubmit = async (e) => {
@@ -384,25 +401,76 @@ export const CameraPage = () => {
                     <p className="text-gray-400">Initializing camera...</p>
                   </div>
                 }>
-                  <Webcam
-                    audio={false}
-                    ref={webcamRef}
-                    screenshotFormat="image/jpeg"
-                    videoConstraints={{
-                      facingMode: cameraMode, // Use the detected camera mode
-                      width: 640,
-                      height: 480
-                    }}
-                    mirrored={cameraMode === "user"} // Only mirror if using front camera
-                    onUserMediaError={(err) => {
-                      console.error('Webcam error:', err);
-                      addToast('Camera access failed. Please check your browser permissions.', 'error');
-                      setIsCameraOpen(false);
-                    }}
-                    className="w-full rounded"
-                  />
+                  <div className="relative overflow-hidden">
+                    <Webcam
+                      audio={false}
+                      ref={webcamRef}
+                      screenshotFormat="image/jpeg"
+                      videoConstraints={{
+                        facingMode: cameraMode, // Use the detected camera mode
+                        width: 640,
+                        height: 480
+                      }}
+                      mirrored={cameraMode === "user"} // Only mirror if using front camera
+                      onUserMediaError={(err) => {
+                        console.error('Webcam error:', err);
+                        addToast('Camera access failed. Please check your browser permissions.', 'error');
+                        setIsCameraOpen(false);
+                      }}
+                      className="w-full rounded"
+                      style={{
+                        transform: `scale(${zoomLevel})`,
+                        transformOrigin: 'center',
+                        transition: 'transform 0.2s ease-in-out'
+                      }}
+                    />
+                    {/* Zoom level indicator */}
+                    <div className="absolute top-2 right-2 bg-gray-800 bg-opacity-70 px-2 py-1 rounded text-xs text-white">
+                      {(zoomLevel).toFixed(1)}x zoom
+                    </div>
+                  </div>
                 </React.Suspense>
               </div>
+              {/* Zoom controls */}
+              <div className="flex justify-center gap-2 p-2 border-t border-gray-700">
+                <Button 
+                  onClick={zoomOut}
+                  variant="outline"
+                  className="flex items-center gap-2 !visible"
+                  style={{ 
+                    display: 'inline-flex !important',
+                    visibility: 'visible !important' 
+                  }}
+                  disabled={zoomLevel <= 1.0}
+                >
+                  <span className="text-xl font-bold">−</span> Zoom Out
+                </Button>
+                <Button 
+                  onClick={resetZoom}
+                  variant="outline"
+                  className="flex items-center gap-2 !visible"
+                  style={{ 
+                    display: 'inline-flex !important',
+                    visibility: 'visible !important' 
+                  }}
+                  disabled={zoomLevel === 1.0}
+                >
+                  Reset Zoom
+                </Button>
+                <Button 
+                  onClick={zoomIn}
+                  variant="outline"
+                  className="flex items-center gap-2 !visible"
+                  style={{ 
+                    display: 'inline-flex !important',
+                    visibility: 'visible !important' 
+                  }}
+                  disabled={zoomLevel >= 3.0}
+                >
+                  <span className="text-xl font-bold">+</span> Zoom In
+                </Button>
+              </div>
+              
               <div className="flex justify-center gap-4 p-4">
                 <Button 
                   onClick={() => setIsCameraOpen(false)} 
@@ -489,7 +557,10 @@ export const CameraPage = () => {
                 <motion.div 
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => setIsCameraOpen(true)}
+                  onClick={() => {
+                    setIsCameraOpen(true);
+                    setZoomLevel(1.0); // Reset zoom when opening camera
+                  }}
                   className="bg-gray-700 rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer"
                 >
                   <Camera size={48} className="text-gray-300 mb-4" />
