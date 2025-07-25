@@ -19,6 +19,8 @@ export const CameraPage = () => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [isLoadingPatients, setIsLoadingPatients] = useState(false);
+  // Add state for camera mode detection
+  const [cameraMode, setCameraMode] = useState("environment"); // Default to rear camera
   
   const webcamRef = useRef(null);
   const navigate = useNavigate();
@@ -40,14 +42,40 @@ export const CameraPage = () => {
       }
     };
     
-    // Check if the browser supports getUserMedia
-    const checkCameraSupport = () => {
+    // Check if the browser supports getUserMedia and detect camera capabilities
+    const checkCameraSupport = async () => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         console.warn('Camera API not supported in this browser');
         addToast('Your browser does not support camera access. Please use a modern browser.', 'error');
         return false;
       }
-      return true;
+      
+      // Try to detect available camera modes
+      try {
+        // First try to access the environment-facing camera (rear)
+        await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: { exact: "environment" } } 
+        });
+        console.log("Rear camera detected and will be used by default");
+        setCameraMode("environment");
+        return true;
+      } catch (envError) {
+        console.log("Couldn't access rear camera, trying front camera:", envError);
+        
+        try {
+          // If rear camera fails, try user-facing (front) camera
+          await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: "user" } 
+          });
+          console.log("Using front camera as fallback");
+          setCameraMode("user");
+          return true;
+        } catch (userError) {
+          console.error("No cameras available:", userError);
+          addToast('Could not access any cameras. Please check your device permissions.', 'error');
+          return false;
+        }
+      }
     };
     
     fetchPatients();
@@ -61,6 +89,18 @@ export const CameraPage = () => {
       }
     };
   }, [addToast]);
+  
+  // Function to toggle between front and rear cameras
+  const toggleCamera = useCallback(() => {
+    // Stop the current stream first
+    if (webcamRef.current && webcamRef.current.stream) {
+      const tracks = webcamRef.current.stream.getTracks();
+      tracks.forEach(track => track.stop());
+    }
+    
+    // Toggle the camera mode
+    setCameraMode(prevMode => prevMode === "user" ? "environment" : "user");
+  }, []);
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -349,11 +389,11 @@ export const CameraPage = () => {
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
                     videoConstraints={{
-                      facingMode: "user", // Use front camera which is more likely to work
+                      facingMode: cameraMode, // Use the detected camera mode
                       width: 640,
                       height: 480
                     }}
-                    mirrored={true} // Mirror for front camera
+                    mirrored={cameraMode === "user"} // Only mirror if using front camera
                     onUserMediaError={(err) => {
                       console.error('Webcam error:', err);
                       addToast('Camera access failed. Please check your browser permissions.', 'error');
@@ -374,6 +414,17 @@ export const CameraPage = () => {
                   }}
                 >
                   <X size={18} /> Cancel
+                </Button>
+                <Button 
+                  onClick={toggleCamera}
+                  variant="outline"
+                  className="flex items-center gap-2 !visible"
+                  style={{ 
+                    display: 'inline-flex !important',
+                    visibility: 'visible !important' 
+                  }}
+                >
+                  <RefreshCw size={18} /> Switch Camera
                 </Button>
                 <Button 
                   onClick={capture}
