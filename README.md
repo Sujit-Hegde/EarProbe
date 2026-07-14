@@ -2,8 +2,6 @@
 
 EarProbe is a **hardware-software integrated healthcare solution** developed to assist ENT professionals in capturing, storing, and securely sharing ear examination images. The project combines a **custom-designed smartphone otoscope** with a modern web platform, enabling doctors to perform ear examinations, maintain patient records, and collaborate remotely for better diagnosis and treatment.
 
-This project was developed as a **Mini Project** for the Department of Electronics & Instrumentation Engineering, SJCE, JSS Science and Technology University. It integrates optical hardware with cloud-based software to provide an affordable and portable digital otoscopy solution. :contentReference[oaicite:1]{index=1}
-
 ---
 
 # Project Overview
