@@ -353,7 +353,3 @@ http://localhost:5173
 - Participated in testing the complete hardware-software workflow.
 
 ---
-
-# Acknowledgements
-
-This project was developed as part of the **Mini Project (22EI69P)** under the Department of Electronics & Instrumentation Engineering, **SJCE, JSS Science and Technology University, Mysuru**, under the guidance of **Dr. Mallikarjunaswamy M S**. The project combines custom-designed hardware with modern web technologies to provide an affordable digital otoscopy solution for healthcare professionals. :contentReference[oaicite:2]{index=2}
