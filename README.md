@@ -1,119 +1,359 @@
-# EarProbe - Medical Image Sharing Platform
+# EarProbe – Smart Otoscope & Medical Image Sharing Platform
 
-EarProbe is a specialized platform designed for medical professionals to capture, store, and securely share ear examination images. The application helps doctors maintain patient records and collaborate with colleagues for better diagnosis and treatment planning.
+EarProbe is a **hardware-software integrated healthcare solution** developed to assist ENT professionals in capturing, storing, and securely sharing ear examination images. The project combines a **custom-designed smartphone otoscope** with a modern web platform, enabling doctors to perform ear examinations, maintain patient records, and collaborate remotely for better diagnosis and treatment.
 
-## Features
+This project was developed as a **Mini Project** for the Department of Electronics & Instrumentation Engineering, SJCE, JSS Science and Technology University. It integrates optical hardware with cloud-based software to provide an affordable and portable digital otoscopy solution. :contentReference[oaicite:1]{index=1}
 
-- **Doctor Authentication**: Secure login and registration system for medical professionals
-- **Patient Management**: Add and manage patient records with basic information
-- **Image Capture**: Take ear images directly through the platform using device cameras
-- **Image Storage**: Securely store ear examination images in the cloud
-- **Image Sharing**: Share images with other doctors for consultation and second opinions
-- **Responsive Design**: Works on desktop and mobile devices
-- **Beautiful UI**: Modern, intuitive interface with animations using Framer Motion
+---
 
-## Tech Stack
+# Project Overview
 
-### Frontend
-- React with Vite
-- React Router for navigation
-- Framer Motion for animations
-- Shadcn-style UI components
-- Tailwind CSS for styling
-- Axios for API communication
-- React Webcam for camera integration
+The system consists of two major components:
 
-### Backend
-- Node.js with Express
-- MongoDB for database
-- JWT for authentication
-- Cloudinary for image storage
-- Bcrypt for password hashing
-- Multer for file uploads
+- **Hardware:** A custom-built smartphone otoscope designed using CAD and 3D printing, integrated with optical lenses, LED illumination, and a smartphone camera.
+- **Software:** EarProbe, a full-stack web application that securely stores patient information and ear images while allowing doctor-to-doctor collaboration.
 
-## Getting Started
+Together, these components create a complete digital ear examination ecosystem suitable for hospitals, clinics, telemedicine, and educational purposes.
 
-### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or Atlas)
-- Cloudinary account (for image storage)
+---
 
-### Installation
+# Hardware Contribution
 
-1. Clone the repository:
+I was responsible for the **hardware development and integration** of the project, which involved designing and assembling the custom smartphone otoscope.
+
+### Hardware Components
+
+- Custom 3D Printed Otoscope Body
+- Optical Lens System
+- High Brightness White LED Illumination
+- Smartphone Camera Alignment Mechanism
+- Speculum Attachment
+- Portable Power Supply
+- Internal Wiring and Mechanical Assembly
+
+### Hardware Features
+
+- Compact and lightweight design
+- Custom CAD-designed enclosure
+- Dual optical lens arrangement for magnification
+- Integrated LED illumination for clear visualization
+- Smartphone compatible design
+- Low-cost and portable
+- Easy maintenance and assembly
+
+### Hardware Development
+
+The hardware was designed to provide:
+
+- Proper optical alignment
+- Uniform illumination
+- Comfortable handling
+- Accurate image capture
+- Easy integration with smartphones
+
+The otoscope body was designed in CAD and fabricated using **3D printing**, ensuring proper placement of the LED, lenses, and camera for high-quality ear imaging.
+
+---
+
+# Software Features
+
+EarProbe provides a secure platform for ENT doctors to manage patient ear examination data.
+
+### Doctor Authentication
+
+- Secure Login
+- Registration
+- JWT Authentication
+- Password Encryption
+
+### Patient Management
+
+- Add New Patients
+- View Patient History
+- Patient Search
+- Patient Information Storage
+
+### Ear Image Capture
+
+- Camera Integration
+- Image Upload
+- Real-Time Capture
+- Mobile Camera Support
+
+### Cloud Storage
+
+- Cloudinary Image Storage
+- Secure Image Access
+- Image History
+
+### Doctor Collaboration
+
+- Doctor-to-Doctor Image Sharing
+- Remote Consultation
+- Community Sharing
+- Secure Communication
+
+### Image Comparison
+
+Doctors can compare previously captured images with newly captured images to monitor disease progression.
+
+---
+
+# Project Workflow
+
 ```
+Patient
+    │
+    ▼
+Smartphone Otoscope
+    │
+    ▼
+Smartphone Camera
+    │
+    ▼
+EarProbe Web Application
+    │
+    ▼
+Cloud Storage (Cloudinary)
+    │
+    ▼
+MongoDB Database
+    │
+    ▼
+Doctor Dashboard
+    │
+    ▼
+Image Sharing & Consultation
+```
+
+---
+
+# Tech Stack
+
+## Frontend
+
+- React (Vite)
+- React Router
+- Tailwind CSS
+- Framer Motion
+- Axios
+- React Webcam
+- Shadcn UI Components
+
+---
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- Bcrypt
+- Multer
+- Cloudinary
+
+---
+
+## Hardware
+
+- Smartphone Camera
+- Optical Magnifying Lens
+- White LED
+- 3D Printed Otoscope
+- Portable Power Supply
+- Speculum
+- CAD Design
+
+---
+
+# Features
+
+✔ Secure Doctor Login
+
+✔ Patient Record Management
+
+✔ Capture Ear Images
+
+✔ Upload Images
+
+✔ Cloud Image Storage
+
+✔ Doctor-to-Doctor Sharing
+
+✔ Compare Old and New Images
+
+✔ Responsive UI
+
+✔ Modern Dashboard
+
+✔ Mobile Camera Integration
+
+✔ Hardware + Software Integration
+
+---
+
+# Screens Available
+
+- Home Dashboard
+- Doctor Login
+- Patient List
+- Capture Ear Image
+- Image Sharing
+- Patient History
+- Image Comparison
+
+---
+
+# Project Structure
+
+```
+EarProbe/
+│
+├── backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── uploads/
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── pages/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
+│
+└── README.md
+```
+
+---
+
+# Installation
+
+## Clone Repository
+
+```bash
 git clone https://github.com/yourusername/earprobe.git
 cd earprobe
 ```
 
-2. Set up the backend:
-```
+---
+
+## Backend Setup
+
+```bash
 cd backend
 npm install
 ```
 
-3. Create a `.env` file in the backend directory with the following variables:
-```
+Create a `.env` file
+
+```env
 PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-CLOUDINARY_CLOUD_NAME=your_cloudinary_name
-CLOUDINARY_API_KEY=your_cloudinary_key
-CLOUDINARY_API_SECRET=your_cloudinary_secret
+
+MONGODB_URI=your_mongodb_uri
+
+JWT_SECRET=your_secret
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+
+CLOUDINARY_API_KEY=your_api_key
+
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-4. Set up the frontend:
-```
-cd ../frontend
-npm install
-```
+Start Backend
 
-### Running the Application
-
-1. Start the backend server:
-```
-cd backend
+```bash
 npm run dev
 ```
 
-2. Start the frontend development server:
-```
+---
+
+## Frontend Setup
+
+```bash
 cd frontend
+
+npm install
+
 npm run dev
 ```
 
-3. Access the application at `http://localhost:5173`
-
-## Project Structure
+Application runs at
 
 ```
-earprobe/
-├── backend/
-│   ├── controllers/     # Route controllers
-│   ├── middleware/      # Auth and upload middleware
-│   ├── models/          # Database models
-│   ├── routes/          # API routes
-│   ├── uploads/         # Temporary upload storage
-│   ├── .env             # Environment variables
-│   ├── server.js        # Express app
-│   └── package.json
-│
-└── frontend/
-    ├── public/          # Public assets
-    ├── src/
-    │   ├── components/  # Reusable UI components
-    │   ├── contexts/    # React contexts
-    │   ├── pages/       # Application pages
-    │   ├── utils/       # Utility functions
-    │   ├── App.jsx      # Main app component
-    │   └── main.jsx     # Entry point
-    ├── index.html
-    ├── package.json
-    └── vite.config.js
+http://localhost:5173
 ```
 
+---
 
-## Acknowledgments
+# Future Improvements
 
-- Design inspired by modern medical applications and dashboards
-- Built as a mini project for healthcare image sharing solutions
+- AI-based Ear Infection Detection
+- Automatic Image Classification
+- Electronic Health Record (EHR) Integration
+- Voice Assisted Examination
+- Multi-device Synchronization
+- Telemedicine Support
+- AI-powered Disease Prediction
+- Image Annotation Tools
+
+---
+
+# Applications
+
+- ENT Clinics
+- Hospitals
+- Telemedicine
+- Rural Healthcare
+- Medical Education
+- Research Laboratories
+- Patient Monitoring
+
+---
+
+# Project Highlights
+
+- Custom Smartphone Otoscope
+- Full Stack Web Application
+- Secure Cloud Storage
+- Medical Image Sharing
+- Doctor Collaboration
+- Low-Cost Healthcare Solution
+- Hardware and Software Integration
+- Responsive Cross-Platform Design
+
+---
+
+# My Contribution
+
+### Hardware
+
+- Designed the custom smartphone otoscope.
+- Selected and integrated the optical lens system.
+- Designed the 3D printable otoscope enclosure using CAD.
+- Integrated LED illumination and mechanical assembly.
+- Aligned the smartphone camera with the optical system.
+- Tested and optimized the hardware for clear ear imaging.
+
+### Software
+
+- Contributed to the development of the EarProbe web platform.
+- Integrated image capture and upload functionality.
+- Assisted in cloud image storage integration.
+- Participated in testing the complete hardware-software workflow.
+
+---
+
+# Acknowledgements
+
+This project was developed as part of the **Mini Project (22EI69P)** under the Department of Electronics & Instrumentation Engineering, **SJCE, JSS Science and Technology University, Mysuru**, under the guidance of **Dr. Mallikarjunaswamy M S**. The project combines custom-designed hardware with modern web technologies to provide an affordable digital otoscopy solution for healthcare professionals. :contentReference[oaicite:2]{index=2}
